@@ -1,4 +1,4 @@
-
+# OK code
 OK = 0
 
 # error codes for user
