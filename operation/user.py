@@ -3,6 +3,7 @@ from utils.debug import DEBUG
 # lei
 class User_opration():
     def __init__(self):
+        DEBUG(func='User_opration/__init__')
         self.__fields__ = ['id','name','password','sex','age','phone','email','job','isMana','level','head_img'] 
 
     def _all(self):
