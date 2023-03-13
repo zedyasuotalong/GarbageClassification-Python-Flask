@@ -1,5 +1,5 @@
 # OK code
-OK = 0
+OK  =  0
 
 # error codes for user
 UNSUPPORTED_LOGIN_TYPE      = 1001
