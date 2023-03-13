@@ -12,7 +12,6 @@ from utils.debug import Logger
 sys.stdout = Logger('/tmp/garbage.log', sys.stdout)
 print('Server Begins...{}'.format(datetime.datetime.now()))
 
-
 # user模块
 from routes.user import user
 app.register_blueprint(user,url_prefix="/user")
