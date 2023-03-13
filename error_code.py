@@ -2,7 +2,6 @@
 OK = 0
 
 # error codes for user
- 
 UNSUPPORTED_LOGIN_TYPE      = 1001
 USER_ACCOUNT_NONEXISTS      = 1002
 USER_ACCOUNT_EXISTS         = 1003
