@@ -31,7 +31,7 @@ def create_client(
     config.endpoint = f'dysmsapi.aliyuncs.com'
     return Dysmsapi20170525Client(config)
 
-def send_code(code):
+def send_code(phone, code):
 
     if DEBUG: print('verify code:{}'.format(code))
 
@@ -40,10 +40,9 @@ def send_code(code):
     
     client = create_client('LTAI5tQGLxbLg1qEEzzSgu7N', 'DR1yyMIJhg76GyyGqcU3hfUrrqFkra')
     send_sms_request = dysmsapi_20170525_models.SendSmsRequest(
-        sign_name='阿里云短信测试',
-        template_code='SMS_154950909',
-        # template_code='SMS_273070101',
-        phone_numbers='18362975343',
+        sign_name='垃圾分类小程序',
+        template_code='SMS_273125196',
+        phone_numbers=phone,
         template_param=str(dic)
         # template_param='{"code":"1234"}'
     )

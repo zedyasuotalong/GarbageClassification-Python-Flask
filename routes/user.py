@@ -85,6 +85,64 @@ def verify_verify_code():
 
     return resp
 
+@user.route('/change_sensitive_info',methods=['POST'])
+def change_sensitive_info():
+    # type==0，value里存的是电话号码
+    # type==1，value里存的是密码
+    ret_code,data = parse_json_data(request.data, ['id', 'type', 'value'])
+    if ret_code!= OK:
+        resp = make_resp(ret_code)
+        return resp
+
+    id = data['id']
+    type = data['type']
+    value = data['value']
+
+    if type not in [0,1]:
+        resp = make_resp(UNSUPPORTED_USER_CHANGE_INFO_TYPE)
+        return resp
+
+    ans = User_change_sensitive_info(id, type, value)
+    resp = make_resp(ans)
+
+    return resp
+
+@user.route('/change_info',methods=['POST'])
+def change_info():
+    # type==0，value里存的是电话号码
+    # type==1，value里存的是密码
+    ret_code,data = parse_json_data(request.data, ['id', 'name', 'email', 'age', 'sex', 'job'])
+
+    if ret_code!= OK:
+        resp = make_resp(ret_code)
+        return resp
+
+    id = data['id']
+    data.pop('id')
+    print(data)
+
+    ans = User_change_info(id, data)
+    resp = make_resp(ans)
+
+    return resp
+
+@user.route('/info',methods=['GET'])
+def info():
+    # type==0，value里存的是电话号码
+    # type==1，value里存的是密码
+    ret_code,data = parse_json_data(request.data, ['id'])
+
+    if ret_code!= OK:
+        resp = make_resp(ret_code)
+        return resp
+
+    ans,data = User_info(data['id'])
+    DEBUG(ans=ans)
+    DEBUG(data=data)
+    resp = make_resp(ans,data)
+
+    return resp
+
 # @user.route('/reg',methods=['POST'])
 # def reg():
 #     data = json.loads(request.data)

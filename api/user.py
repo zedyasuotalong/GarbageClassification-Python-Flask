@@ -12,7 +12,7 @@ from utils.verify_code import send_code
 ##########################for verify_code##############################
 VERIFY_CODE_INTERVAL = 3600
 # 用于存储验证码的dict
-# 格式是 {"18312341234" : {"code":1234, "time":1668931308.123456}}
+# 格式是 {"18312341234" : {"code":1234, "time":1668931308.123456, "type":0/1/2}}
 verify_code_dict = {}
 t1 = None
 lock = None
@@ -28,6 +28,7 @@ def create_timer():
     t1 = threading.Timer(VERIFY_CODE_INTERVAL+VERIFY_CODE_INTERVAL/2, create_timer)
     t1.start()
 def verify_code_help(phone,code):
+    DEBUG(func='verify_code_help')
     ans = OK
 
     global lock
@@ -43,6 +44,12 @@ def verify_code_help(phone,code):
         ans = USER_VERIFY_CODE_EXPIRED
     # 验证码正确
     else:
+        if verify_code_dict[phone]['type'] == 1:
+            u_o = User_opration()
+            ans = u_o._register(phone)
+            DEBUG(register_ans=ans)
+            if ans != 0:
+                ans = USER_REGISTER_ERROR
         verify_code_dict.pop(phone)
     lock.release()
     return ans
@@ -66,18 +73,22 @@ def User_list():
 def User_login(loginType,account,pwd):
     DEBUG(func='api/User_login')
 
+    # 检查用户手机号是否存在
+    u_o = User_opration()
+    data = u_o._login(account)
+    if data is None:
+        return USER_ACCOUNT_NONEXISTS
+    
     # 手机号，验证码登录
     if loginType == 0:
         return verify_code_help(account,pwd)
     
     # 手机号，密码登录
-    u_o = User_opration()
-    data = u_o._login(loginType,account,pwd)
-    if data is None:
-        return USER_ACCOUNT_NONEXISTS
     data = Class_To_Data(data,u_o.__fields__, 1)
     if len(data) == 0:
         return USER_ACCOUNT_NONEXISTS
+    if data['password'] is None:
+        return USER_PASSWORD_NOTSET
     if pwd != data['password']:
         return USER_PASSWORD_ERROR
     
@@ -95,7 +106,7 @@ def User_send_verify_code(type, phone):
     
     # 检查用户手机号是否存在
     u_o = User_opration()
-    user_list = u_o._exists(phone)
+    user_list = u_o._login(phone)
     if user_list is None:
         exists = False
     else:
@@ -111,12 +122,13 @@ def User_send_verify_code(type, phone):
     code = ""
     for _ in range(6):
         code += str(random.randint(0,9))
-    ans = send_code(code)
+    ans = send_code(phone, code)
     if ans == OK:
         lock.acquire()
         verify_code_dict[phone] = {}
         verify_code_dict[phone]['code'] = code
         verify_code_dict[phone]['time'] = time.time()
+        verify_code_dict[phone]['type'] = type
         # if DEBUG: print('send_verify_code:{}'.format(verify_code_dict))
         DEBUG(verify_code_dict=verify_code_dict)
         lock.release()
@@ -128,3 +140,36 @@ def User_verify_verify_code(phone, verify_code):
 
     return verify_code_help(phone, verify_code)
     
+def User_change_sensitive_info(id, type, value):
+    DEBUG(func='api/User_change_sensitive_info')
+    data = dict()
+    if type == 0:
+        data['phone'] = value    
+    else:
+        data['password'] = value
+    u_o = User_opration()
+    ans = u_o._update(id, data)
+    return ans
+
+def User_change_info(id, dict_value):
+    DEBUG(func='api/User_change_info')
+    u_o = User_opration()
+    ans = u_o._update(id, dict_value)
+    return ans
+
+def User_info(id):
+    DEBUG(func='api/User_info')
+    u_o = User_opration()
+    data = u_o._info(id)
+    if data is None:
+        return USER_ACCOUNT_NONEXISTS,None
+    
+    data = Class_To_Data(data,u_o.__fields__, 1)
+    DEBUG(data=data)
+    if len(data) == 0:
+        return USER_ACCOUNT_NONEXISTS,None
+    data.pop('id')
+    data.pop('level')
+    data.pop('head_img')
+    data.pop('password')
+    return OK,data
