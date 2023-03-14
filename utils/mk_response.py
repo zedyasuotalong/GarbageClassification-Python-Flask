@@ -3,10 +3,12 @@ import json
 from error_code import *
 from utils.debug import *
 
-def make_resp(code : int):
+def make_resp(code : int, resp_data : dict):
   data = dict()
   data['status'] = code
   data['msg'] = CODE_STR[code]
+  if resp_data:
+    data['data'] = resp_data
   if code != 0:
     ERROR(error_code=code, error_msg=CODE_STR[code])
   else: 
