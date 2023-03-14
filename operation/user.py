@@ -15,9 +15,17 @@ class User_opration():
     def _login(self, loginType, account, pwd):
         DEBUG(func='User_opration/_login')
         user_list = None
-        if loginType == 0 or loginType == 1:
+        # 目前只支持手机号，不支持邮箱登录
+        if loginType == 1:
             user_list = Users.query.filter_by(phone=account).first()
-        else:
-            user_list = Users.query.filter_by(email=account).first()
+        DEBUG(user_list=user_list)
+
+        return user_list
+
+    def _exists(self, phone):
+        DEBUG(func='User_opration/_exists')
+        # 目前只支持手机号，不支持邮箱登录
+        user_list = Users.query.filter_by(phone=phone).first()
+        DEBUG(user_list=user_list)
 
         return user_list

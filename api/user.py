@@ -9,23 +9,48 @@ from utils.debug import DEBUG
 from error_code import *
 from utils.verify_code import send_code
 
+##########################for verify_code##############################
 VERIFY_CODE_INTERVAL = 3600
 # 用于存储验证码的dict
 # 格式是 {"18312341234" : {"code":1234, "time":1668931308.123456}}
 verify_code_dict = {}
 t1 = None
+lock = None
 def create_timer():
-    DEBUG(func='create_timer')    
+    DEBUG(func='create_timer')
+    global t1,lock
+    lock.acquire() 
     for data in verify_code_dict:
         DEBUG(data=data)
-        if ((verify_code_dict[data]['time']) - time.time()) > VERIFY_CODE_INTERVAL:
+        if (time.time() - verify_code_dict[data]['time']) > VERIFY_CODE_INTERVAL:
             verify_code_dict.pop(data)
-    global t1
+    lock.release()
     t1 = threading.Timer(VERIFY_CODE_INTERVAL+VERIFY_CODE_INTERVAL/2, create_timer)
     t1.start()
+def verify_code_help(phone,code):
+    ans = OK
+
+    global lock
+    if not lock:
+        lock = threading.Lock()
+    lock.acquire()
+    # check用户验证码是否存在
+    if phone not in verify_code_dict or code != verify_code_dict[phone]['code']:
+        ans = USER_VERIFY_CODE_ERROR
+    # check用户验证码是否过期
+    elif (time.time() - verify_code_dict[phone]['time']) > 3600:
+        verify_code_dict.pop(phone)
+        ans = USER_VERIFY_CODE_EXPIRED
+    # 验证码正确
+    else:
+        verify_code_dict.pop(phone)
+    lock.release()
+    return ans
+########################################################
 
 def User_list():
     DEBUG(func='api/User_list')
+
     u_o = User_opration()
     data = u_o._all()
     # data（复杂对象）====> 数据
@@ -39,20 +64,14 @@ def User_list():
 #     return data
 
 def User_login(loginType,account,pwd):
-    u_o = User_opration()
-    # 手机号，验证码登录
     DEBUG(func='api/User_login')
+
+    # 手机号，验证码登录
     if loginType == 0:
-        if account not in verify_code_dict or pwd != verify_code_dict[account]['code']:
-            return USER_VERIFY_CODE_ERROR
-        elif (time.time() - verify_code_dict[account]['time']) > 3600:
-            verify_code_dict.pop(account)
-            return USER_VERIFY_CODE_EXPIRED
-        else:
-            verify_code_dict.pop(account)
-            return OK
+        return verify_code_help(account,pwd)
     
-    # 手机号/邮箱，密码登录
+    # 手机号，密码登录
+    u_o = User_opration()
     data = u_o._login(loginType,account,pwd)
     if data is None:
         return USER_ACCOUNT_NONEXISTS
@@ -64,33 +83,48 @@ def User_login(loginType,account,pwd):
     
     return OK
 
-def User_send_verify_code(phone):
+def User_send_verify_code(type, phone):
     DEBUG(func='api/User_send_verify_code')
-    global t1
+
+    # 创建删除过期验证码的线程
+    global t1,lock
     if not t1:
+        lock = threading.Lock()
         t1 = threading.Timer(5, create_timer)
         t1.start()
-
+    
+    # 检查用户手机号是否存在
+    u_o = User_opration()
+    user_list = u_o._exists(phone)
+    if user_list is None:
+        exists = False
+    else:
+        exists = True
+    
+    # type为0和2需要用户账户存在，1需要用户账户不存在
+    if (type == 0 or type == 2) and exists == False:
+        return USER_ACCOUNT_NONEXISTS
+    elif type == 1 and exists == True:
+        return USER_ACCOUNT_EXISTS
+    
+    # 发送验证码
     code = ""
     for _ in range(6):
         code += str(random.randint(0,9))
     ans = send_code(code)
     if ans == OK:
+        lock.acquire()
         verify_code_dict[phone] = {}
         verify_code_dict[phone]['code'] = code
         verify_code_dict[phone]['time'] = time.time()
         # if DEBUG: print('send_verify_code:{}'.format(verify_code_dict))
         DEBUG(verify_code_dict=verify_code_dict)
+        lock.release()
     
     return ans
 
 def User_verify_verify_code(phone, verify_code):
     DEBUG(func='api/User_verify_verify_code')
-    if phone not in verify_code_dict or verify_code != verify_code_dict[phone]['code']:
-        return USER_VERIFY_CODE_ERROR
-    elif (time.time() - verify_code_dict[phone]['time']) > 3600:
-        verify_code_dict.pop(phone)
-        return USER_VERIFY_CODE_EXPIRED
-    else:
-        verify_code_dict.pop(phone)
-        return OK
+
+    return verify_code_help(phone, verify_code)
+    
