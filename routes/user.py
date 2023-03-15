@@ -8,13 +8,6 @@ user = Blueprint('user',__name__)
 
 from api.user import *
 
-@user.route('/list',methods=['GET'])
-def list():
-    # api的业务逻辑方法
-    print('route')
-    data = User_list()
-    return data
-
 def parse_json_data(data, params):
     try:
         data = json.loads(request.data) # data is json
@@ -109,8 +102,7 @@ def change_sensitive_info():
 
 @user.route('/change_info',methods=['POST'])
 def change_info():
-    # type==0，value里存的是电话号码
-    # type==1，value里存的是密码
+    # 除了id，其他值可以为空
     ret_code,data = parse_json_data(request.data, ['id', 'name', 'email', 'age', 'sex', 'job'])
 
     if ret_code!= OK:
@@ -126,10 +118,8 @@ def change_info():
 
     return resp
 
-@user.route('/info',methods=['GET'])
+@user.route('/info',methods=['GET','POST'])
 def info():
-    # type==0，value里存的是电话号码
-    # type==1，value里存的是密码
     ret_code,data = parse_json_data(request.data, ['id'])
 
     if ret_code!= OK:

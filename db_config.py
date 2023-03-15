@@ -6,7 +6,9 @@
 # --------------------配置数据库---------------------
 from flask_sqlalchemy  import SQLAlchemy
 from flask import Flask
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 # 数据库配置                                               用户名：密码@ip：port/数据库名字
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://test_user:123.com@127.0.0.1:3306/garbage_classification'
 

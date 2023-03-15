@@ -60,10 +60,12 @@ def User_list():
 
     u_o = User_opration()
     data = u_o._all()
+    if data == []:
+        return OK,data
     # data（复杂对象）====> 数据
     data = Class_To_Data(data, u_o.__fields__, 0)
     DEBUG(data=data)
-    return data
+    return OK,data
 
 # def User_reg(kwargs):
 #     u_o = User_operation()
@@ -157,7 +159,7 @@ def User_change_info(id, dict_value):
     ans = u_o._update(id, dict_value)
     return ans
 
-def User_info(id):
+def User_info(id, isMana=0):
     DEBUG(func='api/User_info')
     u_o = User_opration()
     data = u_o._info(id)
@@ -168,8 +170,15 @@ def User_info(id):
     DEBUG(data=data)
     if len(data) == 0:
         return USER_ACCOUNT_NONEXISTS,None
-    data.pop('id')
-    data.pop('level')
-    data.pop('head_img')
-    data.pop('password')
+    if isMana == 0:
+        data.pop('id')
+        data.pop('level')
+        data.pop('head_img')
+        data.pop('password')
     return OK,data
+
+def User_delete_info(id):
+    DEBUG(func='api/User_delete_info')
+    u_o = User_opration()
+    ans = u_o._delete(id)
+    return ans
