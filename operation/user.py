@@ -58,3 +58,20 @@ class User_opration():
         ans = Model_commit()
         DEBUG(commit_ans=ans)
         return ans
+    
+    def _delete(self, id):
+        DEBUG(func='User_opration/_delete')
+        data = Users.query.filter_by(id=id)
+        if data.first() is None:
+            return USER_ACCOUNT_NONEXISTS
+        try:
+            ans = data.delete() # ans should be 1
+        except:
+            ans = 0
+        DEBUG(update_ans=ans)
+        if ans != 1:
+            return USER_CHANGE_INFO_ERROR
+
+        ans = Model_commit()
+        DEBUG(commit_ans=ans)
+        return ans

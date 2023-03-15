@@ -14,7 +14,9 @@ print('Server Begins...{}'.format(datetime.datetime.now()))
 
 # user模块
 from routes.user import user
+from routes.manager import manager
 app.register_blueprint(user,url_prefix="/user")
+app.register_blueprint(manager,url_prefix="/manager")
 
 
 @app.route('/')
