@@ -3,7 +3,7 @@ import random
 import threading
 import time
 
-from operation.user import User_opration
+from operation.user import User_opration,Manager_opration
 from utils.data_process import Class_To_Data
 from utils.debug import DEBUG
 from error_code import *
@@ -181,4 +181,32 @@ def User_delete_info(id):
     DEBUG(func='api/User_delete_info')
     u_o = User_opration()
     ans = u_o._delete(id)
+    return ans
+
+def Manager_login(username, password):
+    DEBUG(func='api/Manager_login')
+
+    # 检查用户手机号是否存在
+    u_o = Manager_opration()
+    data = u_o._login(username)
+    if data is None:
+        return USER_ACCOUNT_NONEXISTS
+    
+    # 手机号，密码登录
+    data = Class_To_Data(data,u_o.__fields__, 1)
+    if len(data) == 0:
+        return USER_ACCOUNT_NONEXISTS
+    if data['password'] is None:
+        return USER_PASSWORD_NOTSET
+    if password != data['password']:
+        return USER_PASSWORD_ERROR
+    
+    return OK
+
+def Manager_change_password(username, password, newPassword):
+    DEBUG(func='api/Manager_change_password')
+
+    u_o = Manager_opration()
+    ans = u_o._update(username, password, newPassword)
+    
     return ans

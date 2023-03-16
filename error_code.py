@@ -13,6 +13,9 @@ USER_REGISTER_ERROR               = 1008
 USER_CHANGE_INFO_ERROR            = 1009
 UNSUPPORTED_USER_CHANGE_INFO_TYPE = 1010
 # error codes for garbage
+UNSUPPORTED_GARBAGE_TYPE = 2001
+GARBAGE_INFO_NONEXISTS = 2002
+GARBAGE_CHANGE_INFO_ERROR = 2003
 
 # other error codes
 DB_CONNECTION_ERROR         = 5001
@@ -35,7 +38,9 @@ CODE_STR = {
   UNSUPPORTED_USER_CHANGE_INFO_TYPE : "不支持的用户修改信息类型",
 
   # error codes for garbage
-
+  UNSUPPORTED_GARBAGE_TYPE    : "不支持的垃圾类型",
+  GARBAGE_INFO_NONEXISTS      : "垃圾信息不存在",
+  GARBAGE_CHANGE_INFO_ERROR   : "垃圾信息修改失败",
   # other error codes
   DB_CONNECTION_ERROR         : "数据库连接错误",
   REQUEST_DATA_FORMAT_ERROR   : "请求数据格式错误",
