@@ -6,7 +6,7 @@ import json
 
 manager = Blueprint('manager',__name__)
 
-from api.user import User_list,User_info,User_change_info,User_delete_info
+from api.user import User_list,User_info,User_change_info,User_delete_info,Manager_login,Manager_change_password
 
 def parse_json_data(data, params):
     try:
@@ -71,6 +71,32 @@ def delete_user_info():
     ans = User_delete_info(id)
     resp = make_resp(ans)
 
+    return resp
+
+@manager.route('/login',methods=['POST'])
+def login():
+    ret_code,data = parse_json_data(request.data, ['username', 'password'])
+
+    if ret_code!= OK:
+        resp = make_resp(ret_code)
+        return resp
+
+    ans = Manager_login(data['username'], data['password'])
+    resp = make_resp(ans)
+
+    return resp
+
+@manager.route('/change_password',methods=['POST'])
+def change_password():
+    ret_code,data = parse_json_data(request.data, ['username', 'password', 'newPassword'])
+
+    if ret_code!= OK:
+        resp = make_resp(ret_code)
+        return resp
+
+    ans = Manager_change_password(data['username'], data['password'], data['newPassword'])
+    resp = make_resp(ans)
+    
     return resp
 
 # @user.route('/reg',methods=['POST'])
