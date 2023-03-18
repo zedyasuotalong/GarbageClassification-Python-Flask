@@ -3,7 +3,7 @@ import random
 import threading
 import time
 
-from operation.user import User_opration,Manager_opration
+from operation.user import User_opration
 from utils.data_process import Class_To_Data
 from utils.debug import DEBUG
 from error_code import *
@@ -49,7 +49,7 @@ def verify_code_help(phone,code):
             ans = u_o._register(phone)
             DEBUG(register_ans=ans)
             if ans != 0:
-                ans = USER_REGISTER_ERROR
+                ans = REGISTER_USER_ERROR
         verify_code_dict.pop(phone)
     lock.release()
     return ans
@@ -141,17 +141,6 @@ def User_verify_verify_code(phone, verify_code):
     DEBUG(func='api/User_verify_verify_code')
 
     return verify_code_help(phone, verify_code)
-    
-def User_change_sensitive_info(id, type, value):
-    DEBUG(func='api/User_change_sensitive_info')
-    data = dict()
-    if type == 0:
-        data['phone'] = value    
-    else:
-        data['password'] = value
-    u_o = User_opration()
-    ans = u_o._update(id, data)
-    return ans
 
 def User_change_info(id, dict_value):
     DEBUG(func='api/User_change_info')
@@ -183,30 +172,3 @@ def User_delete_info(id):
     ans = u_o._delete(id)
     return ans
 
-def Manager_login(username, password):
-    DEBUG(func='api/Manager_login')
-
-    # 检查用户手机号是否存在
-    u_o = Manager_opration()
-    data = u_o._login(username)
-    if data is None:
-        return USER_ACCOUNT_NONEXISTS
-    
-    # 手机号，密码登录
-    data = Class_To_Data(data,u_o.__fields__, 1)
-    if len(data) == 0:
-        return USER_ACCOUNT_NONEXISTS
-    if data['password'] is None:
-        return USER_PASSWORD_NOTSET
-    if password != data['password']:
-        return USER_PASSWORD_ERROR
-    
-    return OK
-
-def Manager_change_password(username, password, newPassword):
-    DEBUG(func='api/Manager_change_password')
-
-    u_o = Manager_opration()
-    ans = u_o._update(username, password, newPassword)
-    
-    return ans

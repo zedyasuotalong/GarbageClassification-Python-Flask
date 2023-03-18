@@ -95,7 +95,13 @@ def change_sensitive_info():
         resp = make_resp(UNSUPPORTED_USER_CHANGE_INFO_TYPE)
         return resp
 
-    ans = User_change_sensitive_info(id, type, value)
+    data = dict()
+    if type == 0:
+        data['phone'] = value    
+    else:
+        data['password'] = value
+
+    ans = User_change_info(id, data)
     resp = make_resp(ans)
 
     return resp
@@ -132,15 +138,3 @@ def info():
     resp = make_resp(ans,data)
 
     return resp
-
-# @user.route('/reg',methods=['POST'])
-# def reg():
-#     data = json.loads(request.data)
-
-#     data = User_reg({
-#         "sername":data['username']
-
-
-        
-#     }})
-#     return "123"
