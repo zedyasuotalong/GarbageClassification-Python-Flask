@@ -1,4 +1,4 @@
-from datetime import datetime
+
 from db_config import db_init as db
 
 # 定义garbage模型类
@@ -8,7 +8,6 @@ class Garbages(db.Model):
     __tablename__ = 'garbage'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(64), nullable=False)
-    time = db.Column(db.Datetime, default=datetime.date())
     category_id = db.Column(db.Interger, nullable=False)
     info = db.Column(db.String(200), nullable=False)
     count = db.Column(db.Integer, nullable=False, default=0)

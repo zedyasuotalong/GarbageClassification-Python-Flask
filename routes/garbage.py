@@ -1,3 +1,4 @@
+
 from utils.debug import INFO,DEBUG
 from utils.mk_response import make_resp
 from error_code import *
@@ -22,24 +23,25 @@ def parse_json_data(data, params):
     return OK, data
 
 
-@garbage.route('/garbage_list_one', methods=['POST'])
-def garbage_list_one():
-    ret_code, data = parse_json_data(request.data, ['type'])
+@garbage.route('/show_one_category', methods=['POST'])
+def show_one_category():
+    ret_code, data = parse_json_data(request.data, ['category_id'])
 
     if ret_code != OK:
         resp = make_resp(ret_code)
         return resp
 
-    type = data['type']
-    if data['type'] not in [0, 1, 2, 3]:
+    category_id = data['category_id']
+    if data['category_id'] not in [0, 1, 2, 3]:
         resp = make_resp(UNSUPPORTED_GARBAGE_TYPE)
         return resp
 
-    ans, data = Garbage_showOneCategory(type)
+    ans, data = Garbage_showOneCategory(category_id)
     DEBUG(ans=ans)
     DEBUG(data=data)
     resp = make_resp(ans, data)
 
     return resp
+
 
 

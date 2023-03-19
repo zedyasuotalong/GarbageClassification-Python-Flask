@@ -4,8 +4,8 @@ from db_config import db_init as db
 # 定义category模型类
 
 
-class Garbages(db.Model):
-    __tablename__ = 'garbage'
+class Category(db.Model):
+    __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     info = db.Column(db.String(200), nullable=False)
