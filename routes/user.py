@@ -39,8 +39,8 @@ def login():
     account   = data['phone']
     password  = data['password']
     
-    ans = User_login(loginType, account, password)
-    resp = make_resp(ans)
+    ans,data = User_login(loginType, account, password)
+    resp = make_resp(ans,data)
 
     return resp
 

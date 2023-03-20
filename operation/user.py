@@ -38,9 +38,9 @@ class User_opration():
     def _register(self, phone):
         DEBUG(func='User_opration/_register')
         user = Users(phone=phone)
-        ans = Model_add_user(user)
-
-        return ans
+        ans,id = Model_add_user(user)
+    
+        return ans,id
     
     def _update(self, id, dict_value):
         DEBUG(func='User_opration/_update')
