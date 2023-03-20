@@ -8,10 +8,11 @@ class Garbages(db.Model):
     __tablename__ = 'garbage'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(64), nullable=False)
-    category_id = db.Column(db.Interger, nullable=False)
-    info = db.Column(db.String(200), nullable=False)
+    category_id = db.Column(db.Integer, nullable=False)
+    info = db.Column(db.String(512), nullable=False)
     count = db.Column(db.Integer, nullable=False, default=0)
-    __table_args__ = (db.CheckConstraint(category_id.in_([0, 1, 2, 3])))
+    # __table_args__ = (db.CheckConstraint(category_id.in_([0, 1, 2, 3])))
+    db.CheckConstraint(category_id.in_([0, 1, 2, 3]))
 
 
 def Model_commit():

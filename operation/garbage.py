@@ -27,23 +27,27 @@ class Garbage_operation():
         info = dict_value['info']
         garbage = Garbages(name=name, category_id=category_id, info=info)
         ans = Model_add_garbage(garbage)
+        if ans != 0:
+            return ADD_GARBAGE_INFO_ERROR
         return ans
 
     def _delete(self, id):
         DEBUG(func='Garbage_operation/_delete')
         data = Garbages.query.filter_by(id=id)
         if data.first() is None:
-            return USER_ACCOUNT_NONEXISTS
+            return GARBAGE_INFO_NONEXISTS
         try:
             ans = data.delete() # ans should be 1
         except:
             ans = 0
         DEBUG(update_ans=ans)
         if ans != 1:
-            return GARBAGE_CHANGE_INFO_ERROR
+            return DELETE_GARBAGE_INFO_ERROR
 
         ans = Model_commit()
         DEBUG(commit_ans=ans)
+        if ans != 0:
+            return DELETE_GARBAGE_INFO_ERROR
         return ans
 
     def _update(self, id, dict_value):
@@ -57,8 +61,10 @@ class Garbage_operation():
             ans = 0
         DEBUG(update_ans=ans)
         if ans != 1:
-            return GARBAGE_CHANGE_INFO_ERROR
+            return CHANGE_GARBAGE_INFO_ERROR
 
         ans = Model_commit()
         DEBUG(commit_ans=ans)
+        if ans != 0:
+            return CHANGE_GARBAGE_INFO_ERROR
         return ans

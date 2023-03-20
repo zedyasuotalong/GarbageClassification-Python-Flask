@@ -16,7 +16,10 @@ DELETE_USER_INFO_ERROR            = 1011
 # error codes for garbage
 UNSUPPORTED_GARBAGE_TYPE = 2001
 GARBAGE_INFO_NONEXISTS = 2002
-GARBAGE_CHANGE_INFO_ERROR = 2003
+GET_GARBAGE_INFO_ERROR = 2003
+CHANGE_GARBAGE_INFO_ERROR = 2004
+ADD_GARBAGE_INFO_ERROR = 2005
+DELETE_GARBAGE_INFO_ERROR = 2006
 
 # error codes for questions
 QUESTION_NONEXISTS          = 3001
@@ -50,7 +53,9 @@ CODE_STR = {
   # error codes for garbage
   UNSUPPORTED_GARBAGE_TYPE    : "不支持的垃圾类型",
   GARBAGE_INFO_NONEXISTS      : "垃圾信息不存在",
-  GARBAGE_CHANGE_INFO_ERROR   : "垃圾信息修改失败",
+  CHANGE_GARBAGE_INFO_ERROR   : "修改垃圾信息失败",
+  ADD_QUESTION_INFO_ERROR     : "添加垃圾信息失败",
+  DELETE_QUESTION_INFO_ERROR  : "删除垃圾信息失败",
   
 
   # error codes for questions

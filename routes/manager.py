@@ -9,7 +9,7 @@ manager = Blueprint('manager',__name__)
 from api.user      import  User_list,User_info,User_change_info,User_delete_info
 from api.manager   import  Manager_login,Manager_change_password
 from api.question  import  Question_list,Question_info,Question_change_info,Question_delete_info,Question_add
-
+from api.garbage   import Garbage_list,Garbage_showOneCategory,Garbage_change_info,Garbage_delete_info,Garbage_add_info
 def parse_json_data(data, params):
     try:
         data = json.loads(request.data) # data is json
@@ -71,8 +71,8 @@ def info():
 
     return resp
 
-@manager.route('/change_user_info',methods=['POST'])
-def change_user_info():
+@manager.route('/change_user',methods=['POST'])
+def change_user():
     ret_code,data = parse_json_data(request.data, ['id','name','phone','password','email','age','sex', 'job'])
 
     if ret_code!= OK:
@@ -88,8 +88,8 @@ def change_user_info():
 
     return resp
 
-@manager.route('/delete_user_info',methods=['POST'])
-def delete_user_info():
+@manager.route('/delete_user',methods=['POST'])
+def delete_user():
     ret_code,data = parse_json_data(request.data, ['id'])
 
     if ret_code!= OK:
@@ -152,10 +152,10 @@ def add_question():
 
     picture = data['picture']
     answer = data['answer']
-    explain = data['explain']
+    explains = data['explains']
 
     # 添加题目
-    ans = Question_add(picture, answer, explain)
+    ans = Question_add(picture, answer, explains)
     resp = make_resp(ans)
 
     return resp
@@ -175,15 +175,63 @@ def delete_question():
 
     return resp
 
-
-# @user.route('/reg',methods=['POST'])
-# def reg():
-#     data = json.loads(request.data)
-
-#     data = User_reg({
-#         "sername":data['username']
+########################################################################################################################
+# Garbage相关的管理员操作
+########################################################################################################################
 
 
-        
-#     }})
-#     return "123"
+@manager.route('/garbage_list', methods=['POST','GET'])
+def garbage_list():
+    ans, data = Garbage_list()
+    resp = make_resp(ans, data)
+    return resp
+
+@manager.route('/garbage_change', methods=['POST'])
+def change_garbage_info():
+    ret_code, data = parse_json_data(request.data, ['id', 'name', 'category_id', 'info', 'count'])
+
+    if ret_code != OK:
+        resp = make_resp(ret_code)
+        return resp
+
+    id = data['id']
+    data.pop('id')
+    print(data)
+
+    ans = Garbage_change_info(id, data)
+    resp = make_resp(ans)
+
+    return resp
+
+@manager.route('/delete_garbage', methods=['POST'])
+def delete_garbage_info():
+    ret_code, data = parse_json_data(request.data, ['id'])
+
+    if ret_code != OK:
+        resp = make_resp(ret_code)
+        return resp
+
+    id = data['id']
+
+    ans = Garbage_delete_info(id)
+    resp = make_resp(ans)
+
+    return resp
+
+@manager.route('/add_garbage', methods=['POST'])
+def add_garbage_info():
+    ret_code, data = parse_json_data(request.data, ['name', 'category_id', 'info'])
+
+    if ret_code != OK:
+        resp = make_resp(ret_code)
+        return resp
+
+    print(data)
+
+    ans = Garbage_add_info(data)
+    resp = make_resp(ans)
+
+    return resp
+
+
+# 如需查询某一类别（category_id)下的所有garbage信息，请调用routes/garbage.py下的show_one_category接口
