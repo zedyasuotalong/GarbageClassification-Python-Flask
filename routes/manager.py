@@ -162,6 +162,7 @@ def add_question():
 
 @manager.route('/delete_question',methods=['POST'])
 def delete_question():
+    print('request.data:{}'.format(request.data))
     ret_code,data = parse_json_data(request.data, ['id'])
 
     if ret_code!= OK:

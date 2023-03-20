@@ -24,4 +24,6 @@ def ping():
     return "ok"
 
 if __name__ == '__main__':
+    # context = ('ssl_cert/server.crt', 'ssl_cert/server.key')
+    # app.run(host='0.0.0.0',port=5000,debug=True, ssl_context=context)
     app.run(host='0.0.0.0',port=5000,debug=True)

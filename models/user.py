@@ -28,11 +28,12 @@ def Model_commit():
     return ans
 
 def Model_add_user(user):
+    id = None
     try:
         db.session.add(user)
+        id = user.id
     except:
-        return 1
-    return Model_commit()
-
-
+        return 1,None
+    ans = Model_commit()
+    return ans,id
 

@@ -30,6 +30,7 @@ def create_timer():
 def verify_code_help(phone,code):
     DEBUG(func='verify_code_help')
     ans = OK
+    data = None
 
     global lock
     if not lock:
@@ -44,15 +45,20 @@ def verify_code_help(phone,code):
         ans = USER_VERIFY_CODE_EXPIRED
     # 验证码正确
     else:
+        # 注册的时候
         if verify_code_dict[phone]['type'] == 1:
             u_o = User_opration()
-            ans = u_o._register(phone)
+            ans,id = u_o._register(phone)
             DEBUG(register_ans=ans)
+            DEBUG(register_id=id)
             if ans != 0:
                 ans = REGISTER_USER_ERROR
+            else:
+                data = dict()
+                data['id'] = id
         verify_code_dict.pop(phone)
     lock.release()
-    return ans
+    return ans,data
 ########################################################
 
 def User_list():
@@ -79,22 +85,28 @@ def User_login(loginType,account,pwd):
     u_o = User_opration()
     data = u_o._login(account)
     if data is None:
-        return USER_ACCOUNT_NONEXISTS
-    
-    # 手机号，验证码登录
-    if loginType == 0:
-        return verify_code_help(account,pwd)
-    
-    # 手机号，密码登录
+        return USER_ACCOUNT_NONEXISTS,None
     data = Class_To_Data(data,u_o.__fields__, 1)
     if len(data) == 0:
-        return USER_ACCOUNT_NONEXISTS
-    if data['password'] is None:
-        return USER_PASSWORD_NOTSET
-    if pwd != data['password']:
-        return USER_PASSWORD_ERROR
+        return USER_ACCOUNT_NONEXISTS,None
+    id = dict()
+    id['id'] = data['id']
+
+    # 手机号，验证码登录
+    if loginType == 0:
+        ans,_ = verify_code_help(account,pwd)
+        if ans == 0:
+            return OK,id
+        else:
+            return ans,None
     
-    return OK
+    # 手机号，密码登录
+    if data['password'] is None:
+        return USER_PASSWORD_NOTSET,None
+    if pwd != data['password']:
+        return USER_PASSWORD_ERROR,None
+    
+    return OK,id
 
 def User_send_verify_code(type, phone):
     DEBUG(func='api/User_send_verify_code')
@@ -140,7 +152,8 @@ def User_send_verify_code(type, phone):
 def User_verify_verify_code(phone, verify_code):
     DEBUG(func='api/User_verify_verify_code')
 
-    return verify_code_help(phone, verify_code)
+    ans,_ = verify_code_help(phone, verify_code)
+    return ans
 
 def User_change_info(id, dict_value):
     DEBUG(func='api/User_change_info')
