@@ -50,7 +50,11 @@ def send_code(phone, code):
     try:
         # 复制代码运行请自行打印 API 的返回值
         response = client.send_sms_with_options(send_sms_request, runtime)
-        if DEBUG: print(response)
+        DEBUG(send_code_response=response)
+        response = str(response)
+        response = eval(response)
+        if response['statusCode']!=200 or response['body']['Code']!='OK':
+            return SEND_VERIFY_CODE_ERROR
         return 0
     except Exception as error:
         # 如有需要，请打印 error

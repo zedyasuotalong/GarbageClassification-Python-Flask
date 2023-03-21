@@ -152,8 +152,8 @@ def User_send_verify_code(type, phone):
 def User_verify_verify_code(phone, verify_code):
     DEBUG(func='api/User_verify_verify_code')
 
-    ans,_ = verify_code_help(phone, verify_code)
-    return ans
+    ans,data = verify_code_help(phone, verify_code)
+    return ans,data
 
 def User_change_info(id, dict_value):
     DEBUG(func='api/User_change_info')
@@ -186,3 +186,14 @@ def User_delete_info(id):
     ans = u_o._delete(id)
     return ans
 
+def User_added_by_time():
+    DEBUG(func='api/User_added_by_time')
+
+    u_o = User_opration()
+    data = u_o._user_added_by_time()
+    if data == []:
+        return OK,data
+    # data（复杂对象）====> 数据
+    data = Class_To_Data(data, ['time', 'nums'], 0)
+    DEBUG(data=data)
+    return OK,data
