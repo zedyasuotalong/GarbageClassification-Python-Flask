@@ -177,6 +177,7 @@ def User_info(id, isMana=0):
         data.pop('level')
         data.pop('head_img')
         data.pop('password')
+        data.pop('reg_time')
     return OK,data
 
 def User_delete_info(id):

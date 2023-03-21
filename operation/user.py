@@ -1,11 +1,12 @@
 from models.user import *
 from utils.debug import DEBUG
 from error_code import *
+from datetime import datetime
 # lei
 class User_opration():
     def __init__(self):
         DEBUG(func='User_opration/__init__')
-        self.__fields__ = ['id','name','password','sex','age','phone','email','job','level','head_img'] 
+        self.__fields__ = ['id','name','password','sex','age','phone','email','job','level','head_img','reg_time'] 
 
     def _all(self):
         DEBUG(func='User_opration/_all')
@@ -37,7 +38,8 @@ class User_opration():
     
     def _register(self, phone):
         DEBUG(func='User_opration/_register')
-        user = Users(phone=phone)
+        time_str = str(datetime.now())[0:19]
+        user = Users(phone=phone,reg_time=time_str)
         ans,id = Model_add_user(user)
     
         return ans,id
