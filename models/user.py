@@ -32,9 +32,9 @@ def Model_add_user(user):
     id = None
     try:
         db.session.add(user)
-        id = user.id
     except:
         return 1,None
     ans = Model_commit()
+    id = user.id
     return ans,id
 

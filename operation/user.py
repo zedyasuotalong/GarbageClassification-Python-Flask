@@ -2,6 +2,9 @@ from models.user import *
 from utils.debug import DEBUG
 from error_code import *
 from datetime import datetime
+
+from db_config import db_init as db
+from sqlalchemy import func
 # lei
 class User_opration():
     def __init__(self):
@@ -38,7 +41,8 @@ class User_opration():
     
     def _register(self, phone):
         DEBUG(func='User_opration/_register')
-        time_str = str(datetime.now())[0:19]
+        time_str = str(datetime.now())[0:10]
+        DEBUG(time=datetime.now())
         user = Users(phone=phone,reg_time=time_str)
         ans,id = Model_add_user(user)
     
@@ -81,3 +85,8 @@ class User_opration():
         if ans != 0:
             return DELETE_USER_INFO_ERROR
         return ans
+    def _user_added_by_time(self):
+        DEBUG(func='User_opration/_user_added_by_time')
+        data = db.session.query(Users.reg_time.label('time'), func.count('*').label('nums')).group_by(Users.reg_time).order_by('time')
+        DEBUG(data=data)
+        return data
