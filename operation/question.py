@@ -1,6 +1,7 @@
 from models.question import *
 from utils.debug import DEBUG
 from error_code import *
+from sqlalchemy import func
 # lei
 class Question_opration():
     def __init__(self):
@@ -68,4 +69,8 @@ class Question_opration():
         if ans!= 0:
             return DELETE_QUESTION_INFO_ERROR
         return ans
-    
+    def _get_(self, num):
+        DEBUG(func='Question_opration/_one')
+        question = db.session.query(Questions).order_by(func.random()).limit(num)
+        DEBUG(question=question)
+        return question

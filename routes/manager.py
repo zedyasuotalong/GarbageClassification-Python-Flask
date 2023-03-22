@@ -9,7 +9,7 @@ manager = Blueprint('manager',__name__)
 from api.user      import  User_list,User_info,User_change_info,User_delete_info,User_added_by_time,User_all_added
 from api.manager   import  Manager_login,Manager_change_password
 from api.question  import  Question_list,Question_info,Question_change_info,Question_delete_info,Question_add
-from api.garbage   import Garbage_list,Garbage_showOneCategory,Garbage_change_info,Garbage_delete_info,Garbage_add_info
+from api.garbage   import Garbage_info,Garbage_list,Garbage_change_info,Garbage_delete_info,Garbage_add_info
 def parse_json_data(data, params):
     try:
         data = json.loads(request.data) # data is json
@@ -206,15 +206,27 @@ def delete_question():
 ########################################################################################################################
 
 
-@manager.route('/garbage_list', methods=['POST','GET'])
+@manager.route('/garbage_list', methods=['GET'])
 def garbage_list():
     ans, data = Garbage_list()
     resp = make_resp(ans, data)
     return resp
 
-@manager.route('/garbage_change', methods=['POST'])
+@manager.route('/garbage_info', methods=['POST'])
+def garbage_info():
+    ret_code, data = parse_json_data(request.data, ['id'])
+
+    if ret_code != OK:
+        resp = make_resp(ret_code)
+        return resp
+
+    ans, data = Garbage_info(data['id'])
+    resp = make_resp(ans, data)
+    return resp
+
+@manager.route('/change_garbage', methods=['POST'])
 def change_garbage_info():
-    ret_code, data = parse_json_data(request.data, ['id', 'name', 'category_id', 'info', 'count'])
+    ret_code, data = parse_json_data(request.data, ['id', 'name', 'category_id', 'info'])
 
     if ret_code != OK:
         resp = make_resp(ret_code)
@@ -252,7 +264,8 @@ def add_garbage_info():
         resp = make_resp(ret_code)
         return resp
 
-    print(data)
+    if data['category_id'] not in [0,1,2,3]:
+        return make_resp(UNSUPPORTED_GARBAGE_TYPE)
 
     ans = Garbage_add_info(data)
     resp = make_resp(ans)

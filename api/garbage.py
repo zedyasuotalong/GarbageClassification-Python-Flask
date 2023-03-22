@@ -20,8 +20,8 @@ def Garbage_showOneCategory(category_id):
     data = Class_To_Data(data, g_o.__fields__, 0)
     DEBUG(data=data)
 
-    if len(data) == 0:
-        return GARBAGE_INFO_NONEXISTS, None
+    # if len(data) == 0:
+    #     return GARBAGE_INFO_NONEXISTS, None
 
     return OK, data
 
@@ -38,6 +38,18 @@ def Garbage_list():
     DEBUG(data=data)
     return OK, data
 
+def Garbage_info(id):
+    DEBUG(func='api/Garbage_info')
+    g_o = Garbage_operation()
+    data = g_o._info(id)
+    if data is None:
+        return GARBAGE_INFO_NONEXISTS,None
+
+    data = Class_To_Data(data,g_o.__fields__, 1)
+    DEBUG(data=data)
+    if len(data) == 0:
+        return GARBAGE_INFO_NONEXISTS,None
+    return OK,data
 
 def Garbage_change_info(id, dict_value):
     DEBUG(func='api/Garbage_change_info')
