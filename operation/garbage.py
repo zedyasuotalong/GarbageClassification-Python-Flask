@@ -14,6 +14,12 @@ class Garbage_operation():
         DEBUG(garbage_list=garbage_list)
         return garbage_list
 
+    def _info(self, id):
+        DEBUG(func='Garbage_operation/_info')
+        garbage_info = Garbages.query.filter_by(id=id).first()
+        DEBUG(garbage_info=garbage_info)
+        return garbage_info
+
     def _sort(self, category_id):
         DEBUG(func='Garbage_operation/_sort')
         garbage_list = Garbages.query.filter_by(category_id=category_id)

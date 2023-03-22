@@ -53,3 +53,17 @@ def Question_delete_info(id):
     ans = q_o._delete(id)
 
     return ans
+
+def Question_get_for_test(num):
+    DEBUG(func='api/Question_get_for_test')
+    q_o = Question_opration()
+    data = q_o._get_(num)
+    if data is None:
+        return QUESTION_NONEXISTS,None
+    
+    data = Class_To_Data(data,q_o.__fields__, 0)
+    DEBUG(data=data)
+    if len(data) == 0:
+        return QUESTION_NONEXISTS,None
+
+    return OK,data

@@ -55,8 +55,8 @@ CODE_STR = {
   UNSUPPORTED_GARBAGE_TYPE    : "不支持的垃圾类型",
   GARBAGE_INFO_NONEXISTS      : "垃圾信息不存在",
   CHANGE_GARBAGE_INFO_ERROR   : "修改垃圾信息失败",
-  ADD_QUESTION_INFO_ERROR     : "添加垃圾信息失败",
-  DELETE_QUESTION_INFO_ERROR  : "删除垃圾信息失败",
+  ADD_GARBAGE_INFO_ERROR      : "添加垃圾信息失败",
+  DELETE_GARBAGE_INFO_ERROR   : "删除垃圾信息失败",
   
 
   # error codes for questions
