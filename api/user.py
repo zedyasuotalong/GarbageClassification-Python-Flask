@@ -173,11 +173,11 @@ def User_info(id, isMana=0):
     if len(data) == 0:
         return USER_ACCOUNT_NONEXISTS,None
     if isMana == 0:
-        data.pop('id')
-        data.pop('level')
+        # data.pop('id')
+        # data.pop('level')
         data.pop('head_img')
         data.pop('password')
-        data.pop('reg_time')
+        # data.pop('reg_time')
     return OK,data
 
 def User_delete_info(id):
@@ -186,14 +186,31 @@ def User_delete_info(id):
     ans = u_o._delete(id)
     return ans
 
-def User_added_by_time():
+def User_added_by_time(startTime, endTime):
     DEBUG(func='api/User_added_by_time')
 
     u_o = User_opration()
-    data = u_o._user_added_by_time()
+    data = u_o._user_added_by_time(startTime, endTime)
     if data == []:
         return OK,data
     # data（复杂对象）====> 数据
     data = Class_To_Data(data, ['time', 'nums'], 0)
     DEBUG(data=data)
+    return OK,data
+
+def User_all_added():
+    DEBUG(func='api/User_added_by_time')
+
+    u_o = User_opration()
+    nums,dayNum = u_o._user_all_added()
+    if nums == []:
+        return OK,{"nums":0,"dayNum":0}
+    # data（复杂对象）====> 数据
+    nums = Class_To_Data(nums, ['time', 'nums'], 0)
+    DEBUG(nums=nums)
+    dayNum = Class_To_Data(dayNum, ['time', 'nums'], 0)
+    DEBUG(dayNum=dayNum)
+    data = dict()
+    data['nums'] = nums[0]['nums']
+    data['dayNum'] = dayNum[0]['nums']
     return OK,data

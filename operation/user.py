@@ -85,8 +85,17 @@ class User_opration():
         if ans != 0:
             return DELETE_USER_INFO_ERROR
         return ans
-    def _user_added_by_time(self):
+    def _user_added_by_time(self, startTime, endTime):
         DEBUG(func='User_opration/_user_added_by_time')
-        data = db.session.query(Users.reg_time.label('time'), func.count('*').label('nums')).group_by(Users.reg_time).order_by('time')
+        data = db.session.query(Users.reg_time.label('time'), func.count('*').label('nums')).filter(Users.reg_time>=startTime,Users.reg_time<=endTime).group_by(Users.reg_time).order_by('time')
         DEBUG(data=data)
         return data
+    
+    def _user_all_added(self):
+        DEBUG(func='User_opration/_user_all_added')
+        nums = db.session.query(Users.reg_time.label('time'), func.count('*').label('nums'))
+        DEBUG(nums=nums)
+        time_str = str(datetime.now())[0:10]
+        dayNum = db.session.query(Users.reg_time.label('time'), func.count('*').label('nums')).filter(Users.reg_time==time_str)
+        DEBUG(dayNum=dayNum)
+        return nums,dayNum

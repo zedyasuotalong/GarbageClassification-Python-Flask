@@ -34,6 +34,7 @@ REQUEST_DATA_FORMAT_ERROR   = 5002
 MISSING_REQUIRED_PARAMS     = 5003
 SEND_VERIFY_CODE_ERROR      = 5004
 FILE_TOO_LARGE           = 5005
+REQUEST_DATA_ERROR          = 5006
 
 CODE_STR = {
   OK                          : "成功",
@@ -69,5 +70,6 @@ CODE_STR = {
   REQUEST_DATA_FORMAT_ERROR   : "请求数据格式错误",
   MISSING_REQUIRED_PARAMS     : "缺少必要参数",
   SEND_VERIFY_CODE_ERROR      : "发送验证码错误",
-  FILE_TOO_LARGE             : "文件过大"
+  FILE_TOO_LARGE              : "文件过大",
+  REQUEST_DATA_ERROR          : "请求参数错误"
 }
