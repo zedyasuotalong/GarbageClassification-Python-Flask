@@ -6,7 +6,7 @@ import json
 
 manager = Blueprint('manager',__name__)
 
-from api.user      import  User_list,User_info,User_change_info,User_delete_info,User_added_by_time
+from api.user      import  User_list,User_info,User_change_info,User_delete_info,User_added_by_time,User_all_added
 from api.manager   import  Manager_login,Manager_change_password
 from api.question  import  Question_list,Question_info,Question_change_info,Question_delete_info,Question_add
 from api.garbage   import Garbage_list,Garbage_showOneCategory,Garbage_change_info,Garbage_delete_info,Garbage_add_info
@@ -103,10 +103,27 @@ def delete_user():
 
     return resp
 
-@manager.route('/getAddUser_byDay',methods=['GET'])
+@manager.route('/getAddUser_byDay',methods=['POST'])
 def getAddUser_byDay():
+    ret_code,data = parse_json_data(request.data, ['startTime', 'endTime'])
 
-    ans,data = User_added_by_time()
+    if ret_code!= OK:
+        resp = make_resp(ret_code)
+        return resp
+
+    startTime = data['startTime']
+    endTime = data['endTime']
+    if startTime > endTime:
+        return make_resp(REQUEST_DATA_ERROR)
+    ans,data = User_added_by_time(startTime, endTime)
+    resp = make_resp(ans,data)
+
+    return resp
+
+@manager.route('/getAllUserNum',methods=['GET'])
+def getAllUserNum():
+
+    ans,data = User_all_added()
     resp = make_resp(ans,data)
 
     return resp
