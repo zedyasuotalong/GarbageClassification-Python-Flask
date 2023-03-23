@@ -214,3 +214,35 @@ def User_all_added():
     data['nums'] = nums[0]['nums']
     data['dayNum'] = dayNum[0]['nums']
     return OK,data
+
+def User_added_by_sex():
+    DEBUG(func='api/User_added_by_sex')
+
+    tmp_data = [
+        {"name":"男","value":0},
+        {"name":"女","value":0}
+    ]
+    u_o = User_opration()
+    data = u_o._user_by_sex()
+    if data == []:
+        return OK,tmp_data
+    # data（复杂对象）====> 数据
+    data = Class_To_Data(data, ['name', 'value'], 0)
+    DEBUG(data=data)
+
+    for i in range(len(data)):
+        tmp_data[data[i]['name']]['value'] = data[i]['value']
+
+    return OK,tmp_data
+
+def User_added_by_job():
+    DEBUG(func='api/User_added_by_job')
+
+    u_o = User_opration()
+    data = u_o._user_by_job()
+    if data == []:
+        return OK,data
+    # data（复杂对象）====> 数据
+    data = Class_To_Data(data, ['job', 'nums'], 0)
+    DEBUG(data=data)
+    return OK,data
