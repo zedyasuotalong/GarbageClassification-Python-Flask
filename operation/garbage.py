@@ -1,7 +1,7 @@
 from models.garbage import *
 from utils.debug import DEBUG
 from error_code import *
-
+from sqlalchemy import func
 
 class Garbage_operation():
     def __init__(self):
@@ -74,3 +74,21 @@ class Garbage_operation():
         if ans != 0:
             return CHANGE_GARBAGE_INFO_ERROR
         return ans
+    
+    def _nums_per_category(self):
+        DEBUG(func='Garbage_operation/_nums_per_category')
+        data = db.session.query(Garbages.category_id.label('name'), func.count('*').label('value')).group_by(Garbages.category_id).order_by('name')
+        DEBUG(data=data)
+        return data
+    
+    def _garbage_all_added(self):
+        DEBUG(func='Garbage_operation/_garbage_all_added')
+        nums = db.session.query(Garbages.id.label('id'), func.count('*').label('nums'))
+        DEBUG(nums=nums)
+        return nums
+
+    def _counts_per_category(self):
+        DEBUG(func='Garbage_operation/_counts_per_category')
+        data = db.session.query(Garbages.category_id.label('name'), func.sum(Garbages.count).label('count')).group_by(Garbages.category_id).order_by('name')
+        DEBUG(data=data)
+        return data

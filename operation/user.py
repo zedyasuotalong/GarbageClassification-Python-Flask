@@ -99,3 +99,15 @@ class User_opration():
         dayNum = db.session.query(Users.reg_time.label('time'), func.count('*').label('nums')).filter(Users.reg_time==time_str)
         DEBUG(dayNum=dayNum)
         return nums,dayNum
+    
+    def _user_by_sex(self):
+        DEBUG(func='User_opration/_user_by_sex')
+        data = db.session.query(Users.sex.label('name'), func.count('*').label('value')).group_by(Users.sex).order_by('name')
+        DEBUG(data=data)
+        return data
+    
+    def _user_by_job(self):
+        DEBUG(func='User_opration/_user_by_job')
+        data = db.session.query(Users.job.label('job'), func.count('*').label('nums')).group_by(Users.job).order_by('job')
+        DEBUG(data=data)
+        return data

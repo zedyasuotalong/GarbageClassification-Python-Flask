@@ -70,3 +70,61 @@ def Garbage_add_info(dict_value):
     g_o = Garbage_operation()
     ans = g_o._add(dict_value)
     return ans
+
+def Garbage_nums_per_category():
+    DEBUG(func='api/Garbage_nums_per_category')
+
+    tmp_data = [
+        {"name":"干垃圾","value":0},
+        {"name":"湿垃圾","value":0},
+        {"name":"可回收物","value":0},
+        {"name":"有害垃圾","value":0}
+    ]
+    g_o = Garbage_operation()
+    data = g_o._nums_per_category()
+    if data == []:
+        return OK,tmp_data
+    # data（复杂对象）====> 数据
+    data = Class_To_Data(data, ['name', 'value'], 0)
+    DEBUG(data=data)
+
+    for i in range(len(data)):
+        tmp_data[data[i]['name']]['value'] = data[i]['value']
+
+    return OK,tmp_data
+
+def Garbage_all_added():
+    DEBUG(func='api/User_added_by_time')
+
+    g_o = Garbage_operation()
+    nums = g_o._garbage_all_added()
+    if nums == []:
+        return OK,{"nums":0}
+    # data（复杂对象）====> 数据
+    nums = Class_To_Data(nums, ['id', 'nums'], 0)
+    DEBUG(nums=nums)
+    data = dict()
+    data['nums'] = nums[0]['nums']
+    return OK,data
+
+def Garbage_count_per_category():
+    DEBUG(func='api/Garbage_count_per_category')
+
+    tmp_data = [
+        {"name":"干垃圾","count":0},
+        {"name":"湿垃圾","count":0},
+        {"name":"可回收物","count":0},
+        {"name":"有害垃圾","count":0}
+    ]
+    g_o = Garbage_operation()
+    data = g_o._counts_per_category()
+    if data == []:
+        return OK,tmp_data
+    # data（复杂对象）====> 数据
+    data = Class_To_Data(data, ['name', 'count'], 0)
+    DEBUG(data=data)
+
+    for i in range(len(data)):
+        tmp_data[data[i]['name']]['count'] = int(data[i]['count'])
+
+    return OK,tmp_data

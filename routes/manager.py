@@ -6,10 +6,10 @@ import json
 
 manager = Blueprint('manager',__name__)
 
-from api.user      import  User_list,User_info,User_change_info,User_delete_info,User_added_by_time,User_all_added
+from api.user      import  User_list,User_info,User_change_info,User_delete_info,User_added_by_time,User_all_added,User_added_by_sex,User_added_by_job
 from api.manager   import  Manager_login,Manager_change_password
 from api.question  import  Question_list,Question_info,Question_change_info,Question_delete_info,Question_add
-from api.garbage   import Garbage_info,Garbage_list,Garbage_change_info,Garbage_delete_info,Garbage_add_info
+from api.garbage   import Garbage_info,Garbage_list,Garbage_change_info,Garbage_delete_info,Garbage_add_info,Garbage_nums_per_category,Garbage_all_added,Garbage_count_per_category
 def parse_json_data(data, params):
     try:
         data = json.loads(request.data) # data is json
@@ -128,6 +128,21 @@ def getAllUserNum():
 
     return resp
 
+@manager.route('/getSexNums',methods=['GET'])
+def getSexNums():
+
+    ans,data = User_added_by_sex()
+    resp = make_resp(ans,data)
+
+    return resp
+
+@manager.route('/getJobNums',methods=['GET'])
+def getJobNums():
+
+    ans,data = User_added_by_job()
+    resp = make_resp(ans,data)
+
+    return resp
 #####################for question management###########################
 @manager.route('/question_list',methods=['GET'])
 def question_list():
@@ -263,8 +278,11 @@ def add_garbage_info():
     if ret_code != OK:
         resp = make_resp(ret_code)
         return resp
-
-    if data['category_id'] not in [0,1,2,3]:
+    category_id = data['category_id']
+    DEBUG(category_id=category_id)
+    if type(category_id) == str:
+        category_id = int(category_id)
+    if category_id not in [0,1,2,3]:
         return make_resp(UNSUPPORTED_GARBAGE_TYPE)
 
     ans = Garbage_add_info(data)
@@ -272,5 +290,21 @@ def add_garbage_info():
 
     return resp
 
+@manager.route('/getGarbageNums', methods=['GET'])
+def getGarbageNums():
+    ans,data = Garbage_nums_per_category()
+    resp = make_resp(ans,data)
+    return resp
 
+@manager.route('/getAllGarbageNum', methods=['GET'])
+def getAllGarbageNum():
+    ans,data = Garbage_all_added()
+    resp = make_resp(ans,data)
+    return resp
+
+@manager.route('/getSearchByCategory', methods=['GET'])
+def getSearchByCategory():
+    ans,data = Garbage_count_per_category()
+    resp = make_resp(ans,data)
+    return resp
 # 如需查询某一类别（category_id)下的所有garbage信息，请调用routes/garbage.py下的show_one_category接口
