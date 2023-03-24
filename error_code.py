@@ -28,6 +28,13 @@ CHANGE_QUESTION_INFO_ERROR  = 3003
 ADD_QUESTION_INFO_ERROR     = 3004
 DELETE_QUESTION_INFO_ERROR  = 3005
 
+# error codes for tests
+TEST_NONEXISTS              = 6001
+GET_TEST_INFO_ERROR         = 6002
+CHANGE_TEST_INFO_ERROR      = 6003
+ADD_TEST_INFO_ERROR         = 6004
+DELETE_TEST_INFO_ERROR      = 6005
+
 # other error codes
 DB_CONNECTION_ERROR         = 5001
 REQUEST_DATA_FORMAT_ERROR   = 5002
@@ -65,6 +72,12 @@ CODE_STR = {
   CHANGE_QUESTION_INFO_ERROR  : "修改问题失败",
   ADD_QUESTION_INFO_ERROR     : "添加问题失败",
   DELETE_QUESTION_INFO_ERROR  : "删除问题失败",
+  # error codes for tests
+  TEST_NONEXISTS              : "答题不存在",
+  GET_TEST_INFO_ERROR         : "获取答题信息失败",
+  CHANGE_TEST_INFO_ERROR      : "修改答题失败",
+  ADD_TEST_INFO_ERROR         : "增加答题失败",
+  DELETE_TEST_INFO_ERROR      : "删除答题失败",
   # other error codes
   DB_CONNECTION_ERROR         : "数据库连接错误",
   REQUEST_DATA_FORMAT_ERROR   : "请求数据格式错误",

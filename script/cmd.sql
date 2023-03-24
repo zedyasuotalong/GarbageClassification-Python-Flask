@@ -45,7 +45,7 @@ create table test(
 	question_id int NOT NULL,
 	user_id int NOT NULL,
 	myAnswer tinyint NOT NULL,
-	time datetime NOT NULL,
+	time varchar(32) NOT NULL,
 	score tinyint NOT NULL,
 	primary key(id, question_id),
 	foreign key(question_id) references question(id),
