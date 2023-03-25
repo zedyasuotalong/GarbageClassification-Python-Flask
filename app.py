@@ -8,8 +8,9 @@ import datetime
 # app = Flask(__name__)
 from db_config import app
 from utils.debug import Logger
+from utils.parse import config
 
-sys.stdout = Logger('/tmp/garbage.log', sys.stdout)
+sys.stdout = Logger(config['log_path'], sys.stdout)
 print('Server Begins...{}'.format(datetime.datetime.now()))
 
 # user模块
@@ -28,4 +29,4 @@ def ping():
 if __name__ == '__main__':
     # context = ('ssl_cert/server.crt', 'ssl_cert/server.key')
     # app.run(host='0.0.0.0',port=5000,debug=True, ssl_context=context)
-    app.run(host='0.0.0.0',port=5000,debug=True)
+    app.run(host=config['server_ip'],port=config['server_port'],debug=True)

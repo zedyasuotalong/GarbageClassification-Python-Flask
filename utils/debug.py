@@ -1,7 +1,7 @@
 import sys
-
+from utils.parse import config
 # set 0 to turn debug mode off
-debug_level  = 2
+debug_level  = int(config['debug_level'])
 
 DBUG_OFF    = 0
 DBUG_DEBUG  = 1
