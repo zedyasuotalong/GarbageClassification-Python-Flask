@@ -202,17 +202,17 @@ def User_all_added():
     DEBUG(func='api/User_added_by_time')
 
     u_o = User_opration()
-    nums,dayNum = u_o._user_all_added()
+    nums,day_num = u_o._user_all_added()
     if nums == []:
-        return OK,{"nums":0,"dayNum":0}
+        return OK,{"nums":0,"day_num":0}
     # data（复杂对象）====> 数据
     nums = Class_To_Data(nums, ['time', 'nums'], 0)
     DEBUG(nums=nums)
-    dayNum = Class_To_Data(dayNum, ['time', 'nums'], 0)
-    DEBUG(dayNum=dayNum)
+    day_num = Class_To_Data(day_num, ['time', 'nums'], 0)
+    DEBUG(day_num=day_num)
     data = dict()
     data['nums'] = nums[0]['nums']
-    data['dayNum'] = dayNum[0]['nums']
+    data['day_num'] = day_num[0]['nums']
     return OK,data
 
 def User_added_by_sex():
