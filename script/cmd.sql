@@ -44,7 +44,7 @@ create table test(
 	id int NOT NULL AUTO_INCREMENT,
 	question_id int NOT NULL,
 	user_id int NOT NULL,
-	myAnswer tinyint NOT NULL,
+	my_answer tinyint NOT NULL,
 	time varchar(32) NOT NULL,
 	score tinyint NOT NULL,
 	primary key(id, question_id),

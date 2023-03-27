@@ -16,7 +16,7 @@ class Manager_opration():
 
         return manaegr_list
     
-    def _update(self, username, password, newPassword):
+    def _update(self, username, password, new_password):
         DEBUG(func='Manager_opration/_update')
         data = Manager.query.filter_by(username=username).first()
         if data is None:
@@ -25,7 +25,7 @@ class Manager_opration():
         if data.first() is None:
             return USER_PASSWORD_ERROR
         dict_value = dict()
-        dict_value['password'] = newPassword
+        dict_value['password'] = new_password
         try:
             ans = data.update(dict_value) # ans should be 1
         except:

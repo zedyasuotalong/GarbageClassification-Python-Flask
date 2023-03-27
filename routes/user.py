@@ -23,23 +23,23 @@ def parse_json_data(data, params):
 @user.route('/login',methods=['POST'])
 def login():
     # 键'password'对应的值是密码或者验证码
-    # loginType==0，password里存的是密码
-    # loginType==1，password里存的是验证码
-    ret_code,data = parse_json_data(request.data, ['loginType', 'phone', 'password'])
+    # login_type==0，password里存的是密码
+    # login_type==1，password里存的是验证码
+    ret_code,data = parse_json_data(request.data, ['login_type', 'phone', 'password'])
     if ret_code != OK:
         resp = make_resp(ret_code)
         return resp
 
     # some check
-    if data['loginType'] not in [0,1]:
+    if data['login_type'] not in [0,1]:
         resp = make_resp(UNSUPPORTED_LOGIN_TYPE)
         return resp    
 
-    loginType = data['loginType']
+    login_type = data['login_type']
     account   = data['phone']
     password  = data['password']
     
-    ans,data = User_login(loginType, account, password)
+    ans,data = User_login(login_type, account, password)
     resp = make_resp(ans,data)
 
     return resp
