@@ -85,9 +85,9 @@ class User_opration():
         if ans != 0:
             return DELETE_USER_INFO_ERROR
         return ans
-    def _user_added_by_time(self, startTime, endTime):
+    def _user_added_by_time(self, start_time, end_time):
         DEBUG(func='User_opration/_user_added_by_time')
-        data = db.session.query(Users.reg_time.label('time'), func.count('*').label('nums')).filter(Users.reg_time>=startTime,Users.reg_time<=endTime).group_by(Users.reg_time).order_by('time')
+        data = db.session.query(Users.reg_time.label('time'), func.count('*').label('nums')).filter(Users.reg_time>=start_time,Users.reg_time<=end_time).group_by(Users.reg_time).order_by('time')
         DEBUG(data=data)
         return data
     
@@ -96,9 +96,9 @@ class User_opration():
         nums = db.session.query(Users.reg_time.label('time'), func.count('*').label('nums'))
         DEBUG(nums=nums)
         time_str = str(datetime.now())[0:10]
-        dayNum = db.session.query(Users.reg_time.label('time'), func.count('*').label('nums')).filter(Users.reg_time==time_str)
-        DEBUG(dayNum=dayNum)
-        return nums,dayNum
+        day_num = db.session.query(Users.reg_time.label('time'), func.count('*').label('nums')).filter(Users.reg_time==time_str)
+        DEBUG(day_num=day_num)
+        return nums,day_num
     
     def _user_by_sex(self):
         DEBUG(func='User_opration/_user_by_sex')

@@ -23,10 +23,10 @@ def Manager_login(username, password):
     
     return OK
 
-def Manager_change_password(username, password, newPassword):
+def Manager_change_password(username, password, new_password):
     DEBUG(func='api/Manager_change_password')
 
     m_o = Manager_opration()
-    ans = m_o._update(username, password, newPassword)
+    ans = m_o._update(username, password, new_password)
     
     return ans

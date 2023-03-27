@@ -43,7 +43,7 @@ def ten():
 
 @test.route('/submit_one',methods=['POST'])
 def submit_one():
-    ret_code, data = parse_json_data(request.data, ['question_id', 'user_id', 'myAnswer', 'score'])
+    ret_code, data = parse_json_data(request.data, ['question_id', 'user_id', 'my_answer', 'score'])
 
     if ret_code != OK:
         resp = make_resp(ret_code)
@@ -63,7 +63,7 @@ def submit_ten():
         return make_resp(REQUEST_DATA_FORMAT_ERROR)
 
     for d in data:
-        for key in ['question_id', 'user_id', 'myAnswer', 'score']:
+        for key in ['question_id', 'user_id', 'my_answer', 'score']:
             if key not in d:
                 return make_resp(MISSING_REQUIRED_PARAMS)
     for d in data:

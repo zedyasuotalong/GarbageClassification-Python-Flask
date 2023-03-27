@@ -8,7 +8,7 @@ class Tests(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    myAnswer = db.Column(db.Integer, nullable=False)
+    my_answer = db.Column(db.Integer, nullable=False)
     time = db.Column(db.String(32), nullable=False)
     score = db.Column(db.Integer, nullable=False)
 

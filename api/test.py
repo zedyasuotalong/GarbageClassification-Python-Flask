@@ -54,6 +54,6 @@ def Test_get_wrong_question(user_id):
     if data == []:
         return OK,data
     # data（复杂对象）====> 数据
-    data = Class_To_Data(data, ['picture','answer','explains','myAnswer','score'], 0)
+    data = Class_To_Data(data, ['picture','answer','explains','my_answer','score'], 0)
     DEBUG(data=data)
     return OK,data

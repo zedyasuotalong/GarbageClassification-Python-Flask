@@ -78,7 +78,7 @@ def User_list():
 #     data = u_o._reg(kwargs)
 #     return data
 
-def User_login(loginType,account,pwd):
+def User_login(login_type,account,pwd):
     DEBUG(func='api/User_login')
 
     # 检查用户手机号是否存在
@@ -93,7 +93,7 @@ def User_login(loginType,account,pwd):
     id['id'] = data['id']
 
     # 手机号，验证码登录
-    if loginType == 0:
+    if login_type == 0:
         ans,_ = verify_code_help(account,pwd)
         if ans == 0:
             return OK,id
@@ -186,11 +186,11 @@ def User_delete_info(id):
     ans = u_o._delete(id)
     return ans
 
-def User_added_by_time(startTime, endTime):
+def User_added_by_time(start_time, end_time):
     DEBUG(func='api/User_added_by_time')
 
     u_o = User_opration()
-    data = u_o._user_added_by_time(startTime, endTime)
+    data = u_o._user_added_by_time(start_time, end_time)
     if data == []:
         return OK,data
     # data（复杂对象）====> 数据

@@ -38,13 +38,13 @@ def login():
 
 @manager.route('/change_password',methods=['POST'])
 def change_password():
-    ret_code,data = parse_json_data(request.data, ['username', 'password', 'newPassword'])
+    ret_code,data = parse_json_data(request.data, ['username', 'password', 'new_password'])
 
     if ret_code!= OK:
         resp = make_resp(ret_code)
         return resp
 
-    ans = Manager_change_password(data['username'], data['password'], data['newPassword'])
+    ans = Manager_change_password(data['username'], data['password'], data['new_password'])
     resp = make_resp(ans)
     
     return resp
@@ -103,41 +103,41 @@ def delete_user():
 
     return resp
 
-@manager.route('/getAddUser_byDay',methods=['POST'])
-def getAddUser_byDay():
-    ret_code,data = parse_json_data(request.data, ['startTime', 'endTime'])
+@manager.route('/get_added_user_by_day',methods=['POST'])
+def get_added_user_by_day():
+    ret_code,data = parse_json_data(request.data, ['start_time', 'end_time'])
 
     if ret_code!= OK:
         resp = make_resp(ret_code)
         return resp
 
-    startTime = data['startTime']
-    endTime = data['endTime']
-    if startTime > endTime:
+    start_time = data['start_time']
+    end_time = data['end_time']
+    if start_time > end_time:
         return make_resp(REQUEST_DATA_ERROR)
-    ans,data = User_added_by_time(startTime, endTime)
+    ans,data = User_added_by_time(start_time, end_time)
     resp = make_resp(ans,data)
 
     return resp
 
-@manager.route('/getAllUserNum',methods=['GET'])
-def getAllUserNum():
+@manager.route('/get_all_user_num',methods=['GET'])
+def get_all_user_num():
 
     ans,data = User_all_added()
     resp = make_resp(ans,data)
 
     return resp
 
-@manager.route('/getSexNums',methods=['GET'])
-def getSexNums():
+@manager.route('/get_sex_nums',methods=['GET'])
+def get_sex_nums():
 
     ans,data = User_added_by_sex()
     resp = make_resp(ans,data)
 
     return resp
 
-@manager.route('/getJobNums',methods=['GET'])
-def getJobNums():
+@manager.route('/get_job_nums',methods=['GET'])
+def get_job_nums():
 
     ans,data = User_added_by_job()
     resp = make_resp(ans,data)
@@ -290,20 +290,20 @@ def add_garbage_info():
 
     return resp
 
-@manager.route('/getGarbageNums', methods=['GET'])
-def getGarbageNums():
+@manager.route('/get_garbage_nums', methods=['GET'])
+def get_garbage_nums():
     ans,data = Garbage_nums_per_category()
     resp = make_resp(ans,data)
     return resp
 
-@manager.route('/getAllGarbageNum', methods=['GET'])
+@manager.route('/get_all_garbage_num', methods=['GET'])
 def getAllGarbageNum():
     ans,data = Garbage_all_added()
     resp = make_resp(ans,data)
     return resp
 
-@manager.route('/getSearchByCategory', methods=['GET'])
-def getSearchByCategory():
+@manager.route('/get_search_by_category', methods=['GET'])
+def get_search_by_category():
     ans,data = Garbage_count_per_category()
     resp = make_resp(ans,data)
     return resp
