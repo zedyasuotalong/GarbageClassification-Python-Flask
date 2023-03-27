@@ -10,6 +10,7 @@ from api.user      import  User_list,User_info,User_change_info,User_delete_info
 from api.manager   import  Manager_login,Manager_change_password
 from api.question  import  Question_list,Question_info,Question_change_info,Question_delete_info,Question_add
 from api.garbage   import Garbage_info,Garbage_list,Garbage_change_info,Garbage_delete_info,Garbage_add_info,Garbage_nums_per_category,Garbage_all_added,Garbage_count_per_category
+from api.test      import *
 def parse_json_data(data, params):
     try:
         data = json.loads(request.data) # data is json
@@ -297,7 +298,7 @@ def get_garbage_nums():
     return resp
 
 @manager.route('/get_all_garbage_num', methods=['GET'])
-def getAllGarbageNum():
+def get_all_garbage_num():
     ans,data = Garbage_all_added()
     resp = make_resp(ans,data)
     return resp
@@ -308,3 +309,21 @@ def get_search_by_category():
     resp = make_resp(ans,data)
     return resp
 # 如需查询某一类别（category_id)下的所有garbage信息，请调用routes/garbage.py下的show_one_category接口
+
+@manager.route('/get_user_test_count', methods=['GET'])
+def get_user_test_count():
+    ans,data = Test_get_account_accuracy()
+    resp = make_resp(ans,data)
+    return resp
+
+@manager.route('/get_que_test_count', methods=['GET'])
+def get_que_test_count():
+    ans, data = Test_get_garbage_account_accuracy()
+    resp = make_resp(ans, data)
+    return resp
+
+@manager.route('/get_question_nums', methods=['GET'])
+def get_question_nums():
+    ans, data = Test_get_test_account_by_day()
+    resp = make_resp(ans, data)
+    return resp

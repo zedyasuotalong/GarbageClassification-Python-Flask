@@ -1,5 +1,6 @@
 from models.test import *
 from models.question import *
+from models.user import *
 from utils.debug import DEBUG
 from error_code import *
 from sqlalchemy import func,distinct
@@ -14,7 +15,7 @@ class Test_operation():
     def _all(self):
         DEBUG(func='Test_operation/_all')
         test_list = Tests.query.all()
-        DEBUG(qtest_list=test_list)
+        DEBUG(test_list=test_list)
         return test_list
     
     def _info(self, id):
@@ -63,3 +64,75 @@ class Test_operation():
             join(Tests).filter(Tests.user_id==user_id,Tests.score==0)
         DEBUG(test=test)
         return test
+
+    def _update_score(self):
+        DEBUG(func='Test_opration/_update_score')
+        right = Tests.query.join(Questions, Tests.question_id == Questions.id).filter(
+            Tests.my_answer == Questions.answer)
+        if right is None:
+            return TEST_NONEXISTS
+        try:
+            ans = right.update({Tests.score: 1})
+        except:
+            ans = 0
+        DEBUG(update_ans=ans)
+        if ans != 1:
+            return CHANGE_TEST_INFO_ERROR
+
+        wrong = Tests.query.join(Questions, Tests.question_id == Questions.id).filter(
+            Tests.my_answer != Questions.answer)
+        if wrong is None:
+            return TEST_NONEXISTS
+        try:
+            ans = wrong.update({Tests.score: 0})
+        except:
+            ans = 0
+        DEBUG(update_ans=ans)
+        if ans != 1:
+            return CHANGE_TEST_INFO_ERROR
+
+        ans = Model_commit()
+        DEBUG(commit_ans=ans)
+        if ans != 0:
+            return CHANGE_TEST_INFO_ERROR
+        return ans
+
+    def _get_user_id(self):
+        DEBUG(func='Test_operation/_get_user_id')
+        users = db.session.query(distinct(Tests.user_id)).all()
+        DEBUG(users=users)
+        return users
+
+    def _user_test_account(self, user_id):
+        DEBUG(func='Test_operation/_user_test_account')
+        # data = db.session.query(Users.phone.label('name'), func.count('*').label('num'),
+        #                         func.sum(Tests.score).label('right_num')) \
+        #     .filter(Users.id == user_id, Tests.user_id == user_id)
+        data = db.session.query(Users.phone.label('name'), func.count('*').label('sum'),
+                                func.sum(Tests.score).label('right_num')).join(Tests) \
+            .filter(Users.id == user_id)
+        DEBUG(data=data)
+        return data
+
+    def _question_account_per_category(self):
+        DEBUG(func='Test_operation/_question_account_per_category')
+        # data = db.session.query(Questions.answer.label('name'), func.count('*').label('num'),
+        #                         func.sum(Tests.score).label('right_num')) \
+        #     .join(Questions, Tests.question_id == Questions.id).group_by(Questions.answer).order_by('name')
+        data = db.session.query(Questions.answer.label('name'), func.count('*').label('sum'),
+                                func.sum(Tests.score).label('right_num')) \
+            .join(Tests).group_by(Questions.answer).order_by('name')
+        DEBUG(data=data)
+        return data
+
+    def _test_all_be_done(self):
+        DEBUG(func='Test_operation/_test_all_be_done')
+        data = db.session.query(func.count('*').label('num'), func.sum(Tests.score).label('right_num'))
+        DEBUG(data=data)
+        return data
+
+    def _test_done_by_day(self, today):
+        DEBUG(func='Test_operation/_test_done_by_day')
+        data = db.session.query(func.count('*').label('num')).filter(Tests.time == today)
+        DEBUG(data=data)
+        return data
