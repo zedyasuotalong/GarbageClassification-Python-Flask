@@ -3,6 +3,7 @@ from utils.mk_response import make_resp
 from error_code import *
 from flask import Blueprint,request
 import json
+import hashlib
 
 manager = Blueprint('manager',__name__)
 
@@ -83,6 +84,7 @@ def change_user():
     id = data['id']
     data.pop('id')
     print(data)
+    data['password'] = hashlib.sha1(data['password'].encode('utf-8')).hexdigest()
 
     ans = User_change_info(id, data)
     resp = make_resp(ans)
