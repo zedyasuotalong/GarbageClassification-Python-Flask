@@ -8,6 +8,7 @@ from utils.data_process import Class_To_Data
 from utils.debug import DEBUG
 from error_code import *
 from utils.verify_code import send_code
+import hashlib
 
 ##########################for verify_code##############################
 VERIFY_CODE_INTERVAL = 3600
@@ -103,6 +104,7 @@ def User_login(login_type,account,pwd):
     # 手机号，密码登录
     if data['password'] is None:
         return USER_PASSWORD_NOTSET,None
+    pwd = hashlib.sha1(pwd.encode('utf-8')).hexdigest()
     if pwd != data['password']:
         return USER_PASSWORD_ERROR,None
     

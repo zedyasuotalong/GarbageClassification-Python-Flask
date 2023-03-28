@@ -3,6 +3,7 @@ from utils.mk_response import make_resp
 from error_code import *
 from flask import Blueprint,request
 import json
+import hashlib
 
 user = Blueprint('user',__name__)
 
@@ -99,7 +100,7 @@ def change_sensitive_info():
     if type == 0:
         data['phone'] = value    
     else:
-        data['password'] = value
+        data['password'] = hashlib.sha1(value.encode('utf-8')).hexdigest()
 
     ans = User_change_info(id, data)
     resp = make_resp(ans)

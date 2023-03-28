@@ -14,7 +14,7 @@ create table user(
 );
 create table manager(
 	username char(16) NOT NULL,
-	password varchar(32) NOT NULL,
+	password varchar(64) NOT NULL,
 	primary key(username)
 );
 create table category(
@@ -50,12 +50,4 @@ create table test(
 	primary key(id, question_id),
 	foreign key(question_id) references question(id),
 	foreign key(user_id) references user(id)
-);
-create table error_question(
-	id int NOT NULL AUTO_INCREMENT,
-	test_id int NOT NULL,
-	question_id int NOT NULL,
-	primary key(id),
-	foreign key(test_id) references test(id),
-	foreign key(question_id) references question(id)
 );
