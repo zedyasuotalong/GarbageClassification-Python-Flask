@@ -32,7 +32,9 @@ def show_one_category():
         return resp
 
     category_id = data['category_id']
-    if data['category_id'] not in [0, 1, 2, 3]:
+    category_id = int(category_id)
+    DEBUG(category_id=category_id)
+    if category_id not in [0, 1, 2, 3]:
         resp = make_resp(UNSUPPORTED_GARBAGE_TYPE)
         return resp
 

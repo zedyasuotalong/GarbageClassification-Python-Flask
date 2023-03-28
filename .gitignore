@@ -1,3 +1,5 @@
 **/__pycache__
 *.ipynb
 static/
+server.ini
+nohup.out
