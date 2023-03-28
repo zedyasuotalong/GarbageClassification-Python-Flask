@@ -64,6 +64,7 @@ CODE_STR = {
 
   # error codes for garbage
   UNSUPPORTED_GARBAGE_TYPE    : "不支持的垃圾类型",
+  GET_GARBAGE_INFO_ERROR      : "获取垃圾信息失败",
   GARBAGE_INFO_NONEXISTS      : "垃圾信息不存在",
   CHANGE_GARBAGE_INFO_ERROR   : "修改垃圾信息失败",
   ADD_GARBAGE_INFO_ERROR      : "添加垃圾信息失败",
