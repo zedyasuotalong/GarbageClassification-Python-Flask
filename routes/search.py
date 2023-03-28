@@ -38,7 +38,7 @@ def picture_search():
     print(picture)
     picture_name = picture.filename
     print(picture_name)
-    picture_path = 'D:/企业实训/本地项目/GarbageClassification-Flask/static/' + picture_name
+    picture_path = 'static/' + picture_name
     print(picture_path)
     picture.save(picture_path)
 
