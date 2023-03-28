@@ -15,13 +15,13 @@ def Picture_search(picture_path):
     print(picture_path)
     id = predict_category(picture_path)  # 此处picture为图片文件而非图片地址，但predict_category中接收的是图片地址，有待修改
     if id <= 105:
-        category_id = 0
-    elif id <= 141:
-        category_id = 1
-    elif id <= 160:
         category_id = 2
-    else:
+    elif id <= 141:
+        category_id = 0
+    elif id <= 160:
         category_id = 3
+    else:
+        category_id = 1
 
     ans, data1 = s_o._id_search(id)
     DEBUG(ans=ans)
