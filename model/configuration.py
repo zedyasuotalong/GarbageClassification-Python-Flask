@@ -6,7 +6,7 @@ BATCH_SIZE = 64
 LEARNING_RATE = 0.001
 
 IMAGE_PATH = './垃圾图片库'
-DEVICE = 'cuda' if torch.cuda.is_available() else 'mps'
+DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
 print(DEVICE)
 
 import os

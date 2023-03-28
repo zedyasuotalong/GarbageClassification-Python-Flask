@@ -17,9 +17,14 @@ print('Server Begins...{}'.format(datetime.datetime.now()))
 from routes.user import user
 from routes.manager import manager
 from routes.test import test
+from routes.search import search
+from routes.garbage import garbage
+
 app.register_blueprint(user,url_prefix="/user")
 app.register_blueprint(manager,url_prefix="/manager")
 app.register_blueprint(test,url_prefix="/test")
+app.register_blueprint(search,url_prefix="/search")
+app.register_blueprint(garbage,url_prefix="/garbage")
 
 
 @app.route('/')
