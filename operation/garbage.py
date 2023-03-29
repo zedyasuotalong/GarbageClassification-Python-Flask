@@ -1,7 +1,7 @@
 from models.garbage import *
 from utils.debug import DEBUG
 from error_code import *
-from sqlalchemy import func
+from sqlalchemy import func,desc
 
 class Garbage_operation():
     def __init__(self):
@@ -10,7 +10,7 @@ class Garbage_operation():
 
     def _all(self):
         DEBUG(func='Garbage_operation/_all')
-        garbage_list = Garbages.query.all()
+        garbage_list = Garbages.query.order_by(desc(Garbages.id)).all()
         DEBUG(garbage_list=garbage_list)
         return garbage_list
 

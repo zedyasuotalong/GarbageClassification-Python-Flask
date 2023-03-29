@@ -95,7 +95,9 @@ def change_sensitive_info():
     if type not in [0,1]:
         resp = make_resp(UNSUPPORTED_USER_CHANGE_INFO_TYPE)
         return resp
-
+    if value is None:
+        return make_resp(REQUEST_DATA_ERROR)
+        
     data = dict()
     if type == 0:
         data['phone'] = value    

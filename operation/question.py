@@ -1,7 +1,7 @@
 from models.question import *
 from utils.debug import DEBUG
 from error_code import *
-from sqlalchemy import func
+from sqlalchemy import func,desc
 # lei
 class Question_opration():
     def __init__(self):
@@ -10,7 +10,7 @@ class Question_opration():
 
     def _all(self):
         DEBUG(func='Question_opration/_all')
-        question_list = Questions.query.all()
+        question_list = Questions.query.order_by(desc(Questions.id)).all()
         DEBUG(question_list=question_list)
         return question_list
     
