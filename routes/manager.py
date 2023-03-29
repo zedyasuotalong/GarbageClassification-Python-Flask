@@ -45,7 +45,8 @@ def change_password():
     if ret_code!= OK:
         resp = make_resp(ret_code)
         return resp
-
+    if data['new_password'] is None:
+        return make_resp(REQUEST_DATA_ERROR)
     ans = Manager_change_password(data['username'], data['password'], data['new_password'])
     resp = make_resp(ans)
     
@@ -84,7 +85,8 @@ def change_user():
     id = data['id']
     data.pop('id')
     print(data)
-    data['password'] = hashlib.sha1(data['password'].encode('utf-8')).hexdigest()
+    if data['password'] is not None:
+        data['password'] = hashlib.sha1(data['password'].encode('utf-8')).hexdigest()
 
     ans = User_change_info(id, data)
     resp = make_resp(ans)
