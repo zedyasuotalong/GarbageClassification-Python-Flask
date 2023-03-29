@@ -5,13 +5,13 @@ from db_config import db_init as db
 class Users(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(64), nullable=True)
+    name = db.Column(db.String(64), nullable=True,default='新用户')
     password = db.Column(db.String(64), nullable=True)
     sex = db.Column(db.Integer, nullable=True, default=0)
     age = db.Column(db.Integer, nullable=True, default=20)
     phone = db.Column(db.String(16), nullable=False, unique=True)
-    email = db.Column(db.String(32), nullable=True)
-    job = db.Column(db.String(64), nullable=True)
+    email = db.Column(db.String(32), nullable=True, default='')
+    job = db.Column(db.String(64), nullable=True, default='学生')
     level = db.Column(db.Integer, nullable=True, default=0)
     head_img = db.Column(db.String(128), nullable=True)
     reg_time = db.Column(db.String(64), nullable=True)
