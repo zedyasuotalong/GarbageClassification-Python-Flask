@@ -67,7 +67,7 @@ def info():
         resp = make_resp(ret_code)
         return resp
 
-    ans,data = User_info(data['id'], isMana=1)
+    ans,data = User_info(data['id'], is_mana=1)
     DEBUG(ans=ans)
     DEBUG(data=data)
     resp = make_resp(ans,data)

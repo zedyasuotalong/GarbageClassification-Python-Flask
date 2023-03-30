@@ -163,7 +163,7 @@ def User_change_info(id, dict_value):
     ans = u_o._update(id, dict_value)
     return ans
 
-def User_info(id, isMana=0):
+def User_info(id, is_mana=0):
     DEBUG(func='api/User_info')
     u_o = User_opration()
     data = u_o._info(id)
@@ -174,7 +174,7 @@ def User_info(id, isMana=0):
     DEBUG(data=data)
     if len(data) == 0:
         return USER_ACCOUNT_NONEXISTS,None
-    if isMana == 0:
+    if is_mana == 0:
         # data.pop('id')
         # data.pop('level')
         data.pop('head_img')
